@@ -1,0 +1,520 @@
+<html>
+<head>
+  <style type="text/css">
+  body  { font-size: .8em;
+          font-family: Arial, Helvetica, Verdana, sans-serif;
+          font-weight: bold; }
+  p { margin: 0px; }
+  input { margin-left: 1em; }
+  .orange { color: #f79720; }
+  .purple { color: #a64891; }
+  .red { color: #e31e1e;  }
+  .blue { color: #789b9b; }
+  .green { color: #678917; }
+  .yellow { color: #cfb317; }
+  </style>
+</head>
+<body>
+<div id="sidebar" style="font-weight: normal; position:fixed; width: 300px;">
+<p style="margin:1em;">
+  <b><a href="http://fogo.minethings.com/miners/profile/D1CKBU77">D1CKBU77</a>'s Mine Things vehicle planner!</b><br/><br/>
+  <img src="db.png"/>
+</p>
+<p style="margin:1em;">
+  Note: W is the chemical element symbol of tungsten.
+  Tungsten is too long to write.
+  Some purple and orange mods/weapons are missing.
+  I have accounts on Ebeko and Fogo only, and some items haven't been discovered
+  there yet.
+</p>
+<p style="margin:1em;">
+  If you notice a mistake or have the stats for a missing thing, PM me on Fogo.
+</p>
+<p style="margin:1em;">
+  Use at your own risk. You can just copy this HTML file to your computer for
+  future use, all the needed javascript and data is embedded in this file.
+</p>
+<p style="margin:1em;">
+  <button type="button" onclick="hideSidebar()">Hide this sidebar</button>
+</p>
+</div>
+<script>
+var bolts_orange = 5;
+var bolts_purple = 4;
+var bolts_red = 3;
+var bolts_blue = 2;
+var bolts_green = 1;
+var bolts_yellow = 0;
+
+// Speed, Capacity, Attack, Armor
+var OT_stats = [75, 10, 8.8, 97];
+var OJ_stats = [70, 14, 4.8, 100];
+var OAT_stats = [45, 20, 4.0, 81];
+var OAFV_stats = [55, 14, 2.0, 249];
+var OF_stats = [75, 16, 0.0, 30];
+var OC_stats = [75, 12, 5.0, 225];
+var PT_stats = [65, 9, 9.6, 105];
+var PAL_stats = [45, 14, 0.8, 250];
+var PGC_stats = [50, 15, 4.0, 105];
+var PSc_stats = [75, 13, 4.0, 65];
+var PSn_stats = [60, 16, 6.0, 25];
+var RBu_stats = [45, 15, 0.0, 73.0];
+var RBa_stats = [70, 11, 4.4, 41];
+var RST_stats = [30, 13, 1.6, 161];
+var RMT_stats = [50, 12, 2.8, 89];
+var RA_stats = [60, 7, 5.0, 100];
+var BT_stats = [35, 15, 0.0, 41.0];
+var BR_stats = [60, 10, 0.4, 49.0];
+var BSM_stats = [40, 12, 2.8, 25.0];
+var BSB_stats = [55, 9, 0.0, 121.0];
+var BC_stats = [50, 6, 7.6, 80.0];
+var GGC_stats = [25, 9, 1.2, 57.0];
+var GGK_stats = [30, 9, 1.6, 33.0];
+var GS_stats = [35, 9, 0.0, 49.0];
+var GV_stats = [50, 7, 1.6, 25.0];
+var GSc_stats = [35, 5, 8.0, 25];
+var YC_stats = [19, 4, 0.7, 6];
+var YD_stats = [15, 7, 0, 0];
+var YU_stats = [23, 1, 1.6, 8];
+var YR_stats = [25, 5, 0.2, 4];
+var YJ_stats = [21, 3, 0, 25];
+
+// Capacity, Attack, Armor, Off, Def, Dodge
+var CAR_mod  = [-3, 12.3, -66,  0,  0, -9];
+var CWG_mod  = [-3, -2.0, 208, -3,  0,  0];
+var CReP_mod  = [-3, -1.2, 192,  0,  0, -6];
+var CPI_mod  = [-3, -1.9, -50,  0,  0, 58];
+var CDS_mod  = [-3, -1.4,   0,  0, -6, 55];
+var CHLT_mod = [-3,    0,  60,  0,  0, 21];
+var TuGT_mod = [-2,  4.0,   0,  0,  0,  0];
+var TuMT_mod = [-2,  7.0, -60,  0,  0,  0];
+var TuGC_mod = [-2,  7.8,   0,  0,  0, -19];
+var TuDP_mod = [-2,    0,  80,  0,  0,  0];
+var TuRB_mod = [-2,    0, 136,  0, -7,  0];
+var TuGG_mod = [-2,    0, 128,  0,  0, -12];
+var TuFW_mod = [-2, -2.5, 130,  0,  0,  0];
+var TuQS_mod = [-2,    0,   0,  0,  0,  20];
+var TuBC_mod = [-2, -2.2,   0,  0,  0,  31];
+var TiGR_mod = [-2,  6.0, -24,  0, -4,  0];
+var TiAR_mod = [-2,  4.4, -12,  0,  0, -3];
+var TiRF_mod = [-2,  5.2,   0,  0, -3, -4];
+var TiWG_mod = [-2, -0.8, 104, -3,  0,  0];
+var TiReP_mod = [-2, -0.7,  90,  0,  0, -3];
+var TiRoP_mod = [-2,    0,  96,  0, -2, -4];
+var TiPI_mod = [-2, -1.1, -26,  0,  0, 28];
+var TiDS_mod = [-2, -0.8,   0,  0, -2, 24];
+var TiCL_mod = [-2,    0, -24, -4,  0, 30];
+var TiHD_mod = [-2,  3.2,  64,  0, -8,  0];
+var TiTD_mod = [-2,  2.6, -40,  0,  0, 13];
+var TiSP_mod = [-2, -1.6,  40,  0,  0, 14];
+var IGT_mod = [-2,  2.4,   0,  0,  0,  0];
+var IMT_mod = [-2,  3.5, -22,  0,  0,  0];
+var I90_mod = [-2,  3.2,   0, -2,  0,  0];
+var ICG_mod = [-2,  3.0,   0,  0,  0, -3];
+var IDP_mod = [-2,    0,  48,  0,  0,  0];
+var IRB_mod = [-2,    0,  64,  0, -2,  0];
+var IGG_mod = [-2,    0,  60,  0,  0, -3];
+var IFW_mod = [-2, -0.5,  58,  0,  0,  0];
+var IQS_mod = [-2,    0,   0,  0,  0, 12];
+var IBC_mod = [-2, -1.6,   0,  0,  0, 20];
+var IFE_mod = [-2,    0, -24,  0,  0, 18];
+var IB_mod  = [-2,    0,   0, -2,  0, 16];
+var AGR_mod = [-1,  2.0,  -8,  0, -2,  0];
+var AAR_mod = [-1,  1.7, -10,  0,  0, -2];
+var ARF_mod = [-1,  1.8,   0,  0, -2, -1];
+var AWG_mod = [-1, -0.5,  34, -1,  0,  0];
+var AReP_mod = [-1,-0.4,  28,  0,  0, -1];
+var ARoP_mod = [-1,   0,  40,  0, -2, -2];
+var API_mod = [-1, -0.7,  -2,  0,  0,  8];
+var ADS_mod = [-1, -0.2,   0,  0, -1,  7];
+var ACL_mod = [-1,    0,  -4, -1,  0,  7];
+var AGT_mod = [-1,  0.7,   6,  0,  0, -1];
+var ASM_mod = [-1,  0.6,   0, -2,  0,  5];
+var AS_mod  = [-1,    0,   4,  0, -1,  5];
+var TGT_mod = [-1,  0.4,   0,  0,  0,  0];
+var TMT_mod = [-1,  0.7,  -6,  0,  0,  0];
+var T90_mod = [-1,  0.8,   0, -1,  0,  0];
+var TCG_mod = [-1,  0.6,   0,  0,  0, -1];
+var TDP_mod = [-1,    0,   8,  0,  0,  0];
+var TRB_mod = [-1,    0,  16,  0, -1,  0];
+var TGG_mod = [-1,    0,  12,  0,  0, -1];
+var TFW_mod = [-1, -0.3,  14,  0,  0,  0];
+var TQS_mod = [-1,    0,   0,  0,  0,  2];
+var TBC_mod = [-1, -0.2,   0,  0,  0,  3];
+var TFE_mod = [-1,    0,  -8,  0,  0,  4];
+var TB_mod  = [-1,    0,   0, -1,  0,  4];
+
+// Offense, Defense
+var OFT_wpn = [0, 6];
+var OSeG_wpn = [2, 4];
+var OSyG_wpn = [4, 2];
+var OL_wpn  = [6, 0];
+var PPM_wpn = [0, 5];
+var PRL_wpn = [1, 4];
+var PSR_wpn = [2, 3];
+var PMaG_wpn = [4, 1];
+var PMoG_wpn = [5, 0];
+var RPB_wpn = [0, 4];
+var RS_wpn  = [1, 3];
+var RGL_wpn = [2, 2];
+var RRe_wpn = [3, 1];
+var RRi_wpn = [4, 0];
+var BMC_wpn = [0, 3];
+var BRT_wpn = [1, 2];
+var BC_wpn  = [2, 1];
+var BK_wpn  = [2, 1];
+var BLP_wpn  = [3, 0];
+var GSS_wpn  = [0, 2];
+var GTC_wpn  = [0, 2];
+var GC_wpn  = [1, 1];
+var GBA_wpn  = [2, 0];
+var GB_wpn  = [2, 0];
+var YFA_wpn = [0, 1];
+var YW_wpn = [0, 1];
+var YBK_wpn = [0, 1];
+var YPC_wpn = [1, 0];
+var YB_wpn = [1, 0];
+
+var base_speed = 0;
+var base_capacity = 0;
+var base_attack = 0.0;
+var base_armor = 0.0;
+var mod_speed = 0;
+var mod_capacity = 0;
+var mod_attack = 0;
+var mod_armor = 0;
+var mod_offense = 0;
+var mod_defense = 0;
+var mod_dodge = 0;
+var wpn_capacity = 0;
+var wpn_offense = 0;
+var wpn_defense = 0;
+var mod_bolts = 0;
+var wpn_bolts = 0;
+
+function refreshValues()
+{
+  document.getElementById("base_speed").innerText = base_speed;
+  document.getElementById("base_capacity").innerText = base_capacity;
+  document.getElementById("base_attack").innerText = base_attack.toFixed(1);
+  document.getElementById("base_armor").innerText = base_armor;
+  document.getElementById("mod_capacity").innerText = mod_capacity;
+  document.getElementById("mod_attack").innerText = mod_attack.toFixed(1);
+  document.getElementById("mod_armor").innerText = mod_armor;
+  document.getElementById("mod_offense").innerText = mod_offense;
+  document.getElementById("mod_defense").innerText = mod_defense;
+  document.getElementById("mod_dodge").innerText = mod_dodge;
+  document.getElementById("wpn_capacity").innerText = wpn_capacity;
+  document.getElementById("wpn_offense").innerText = wpn_offense;
+  document.getElementById("wpn_defense").innerText = wpn_defense;
+  document.getElementById("total_capacity").innerText = base_capacity + mod_capacity + wpn_capacity;
+  document.getElementById("total_attack").innerText = (base_attack + mod_attack).toFixed(1);
+  document.getElementById("total_armor").innerText = base_armor + mod_armor;
+  document.getElementById("total_offense").innerText = mod_offense + wpn_offense;
+  document.getElementById("total_defense").innerText = mod_defense + wpn_defense;
+  document.getElementById("total_dodge").innerText = mod_dodge;
+  document.getElementById("bolts_needed").innerText = mod_bolts + wpn_bolts;
+}
+
+window.onload = function() {
+  var radiobuttons = document.getElementsByName("vehicle");
+  for (var i = 0; i < radiobuttons.length; i++)
+    radiobuttons[i].onclick = radioClickHandler;
+  var checkboxes = document.getElementsByName("mod");
+  for (var i = 0; i < checkboxes.length; i++)
+    checkboxes[i].onclick = checkboxClickHandler;
+  var numbers = document.getElementsByName("weapon");
+  for (var i = 0; i < numbers.length; i++)
+    numbers[i].onclick = numberClickHandler;
+  refreshValues();
+}
+
+function hideSidebar()
+{
+  var sidebar = document.getElementById("sidebar");
+  sidebar.setAttribute("style", "display:none;");
+  var main = document.getElementById("main");
+  main.setAttribute("style", "position: fixed; left: 1em;")
+}
+
+function numberClickHandler()
+{
+  var numbers = document.getElementsByName("weapon");
+  wpn_capacity = wpn_offense = wpn_defense = wpn_bolts = 0;
+  for (var i = 0; i < numbers.length; i++) {
+    wpn_offense += numbers[i].value * window[numbers[i].className + "_wpn"][0];
+    wpn_defense += numbers[i].value * window[numbers[i].className + "_wpn"][1];
+    wpn_capacity -= numbers[i].value;
+    wpn_bolts += numbers[i].value * window["bolts_" + numbers[i].parentElement.getAttribute("class")];
+  }
+  refreshValues();
+}
+
+function checkboxClickHandler()
+{
+  var checkboxes = document.getElementsByName("mod");
+  mod_capacity = mod_attack = mod_armor = mod_offense = mod_defense = mod_dodge = mod_bolts = 0;
+  for (var i = 0; i < checkboxes.length; i++)
+    if (checkboxes[i].checked) {
+      mod_capacity += window[checkboxes[i].value + "_mod"][0];
+      mod_attack += window[checkboxes[i].value + "_mod"][1];
+      mod_armor += window[checkboxes[i].value + "_mod"][2];
+      mod_offense += window[checkboxes[i].value + "_mod"][3];
+      mod_defense += window[checkboxes[i].value + "_mod"][4];
+      mod_dodge += window[checkboxes[i].value + "_mod"][5];
+      mod_bolts += window["bolts_" + checkboxes[i].parentElement.getAttribute("class")];
+    }
+  refreshValues();
+}
+
+function radioClickHandler()
+{
+  var radiobuttons = document.getElementsByName("vehicle");
+  for (var i = 0; i < radiobuttons.length; i++)
+    if (radiobuttons[i].checked) {
+      base_speed = window[radiobuttons[i].value + "_stats"][0];
+      base_capacity = window[radiobuttons[i].value + "_stats"][1];
+      base_attack = window[radiobuttons[i].value + "_stats"][2];
+      base_armor = window[radiobuttons[i].value + "_stats"][3];
+      refreshValues();
+      break;
+    }
+}
+
+</script>
+<div id="main" style="position: fixed; left: 320;">
+<div style="width: 600px; border: 1px solid; margin-bottom:0.5em;">
+<form name="vehicleSelection" action="">
+<b>Vehicle type</b><br>
+<p class="orange">
+<input type="radio" name="vehicle" value="OT">Thing 3
+<input type="radio" name="vehicle" value="OJ">Jumper
+<input type="radio" name="vehicle" value="OAT">Assault Truck
+<input type="radio" name="vehicle" value="OAFV">AFV
+<input type="radio" name="vehicle" value="OF">Flatbed
+<input type="radio" name="vehicle" value="OC">Champion
+</p>
+<p class="purple">
+<input type="radio" name="vehicle" value="PT">Tank
+<input type="radio" name="vehicle" value="PAL">Armored Limo
+<input type="radio" name="vehicle" value="PGC">Gun Car
+<input type="radio" name="vehicle" value="PSc">Scout
+<input type="radio" name="vehicle" value="PSn">Snowplow
+</p>
+<p class="red">
+<input type="radio" name="vehicle" value="RBu">Bus
+<input type="radio" name="vehicle" value="RBa">Bandit
+<input type="radio" name="vehicle" value="RST">Siege Tower
+<input type="radio" name="vehicle" value="RMT">Milk Truck
+<input type="radio" name="vehicle" value="RA">Ambulance
+</p>
+<p class="blue">
+<input type="radio" name="vehicle" value="BT">Tractor
+<input type="radio" name="vehicle" value="BR">Roadster
+<input type="radio" name="vehicle" value="BSM">Sidecar Motorcycle
+<input type="radio" name="vehicle" value="BSB">Short Bus
+<input type="radio" name="vehicle" value="BC">Chopper
+</p>
+<p class="green">
+<input type="radio" name="vehicle" value="GGC">Golf Cart
+<input type="radio" name="vehicle" value="GGK">Go Kart
+<input type="radio" name="vehicle" value="GS">Scooter
+<input type="radio" name="vehicle" value="GV">Van
+<input type="radio" name="vehicle" value="GSc">Stagecoach
+</p>
+<p class="yellow">
+<input type="radio" name="vehicle" value="YC">Camel
+<input type="radio" name="vehicle" value="YD">Donkey
+<input type="radio" name="vehicle" value="YU">Unicycle
+<input type="radio" name="vehicle" value="YR">Rickshaw
+<input type="radio" name="vehicle" value="YJ">Jalopy
+</p>
+</form>
+</div>
+<div style="width: 850px; border: 1px solid; margin-bottom:0.5em;">
+<form name="modSelection" action="">
+<b>Mods<br></b>
+<p class="orange">
+  <input type="checkbox" name="mod" value="CAR">Carbon Ammo Rack
+  <input type="checkbox" name="mod" value="CWG">Carbon Window Guards
+  <input type="checkbox" name="mod" value="CReP">Carbon Rear Plates<br>
+  <input type="checkbox" name="mod" value="CPI">Carbon Power Inverter
+  <input type="checkbox" name="mod" value="CDS">Carbon Drive Shaft
+  <input type="checkbox" name="mod" value="CHLT">Carbon High Load Tires<br>
+</p>
+<p class="purple">
+  <input type="checkbox" name="mod" value="TuGT">W Gun Turret
+  <input type="checkbox" name="mod" value="TuMT">W Missile Turret
+  <input type="checkbox" name="mod" value="TuDP">W Door Panels
+  <input type="checkbox" name="mod" value="TuRB">W Roll Bar<br>
+  <input type="checkbox" name="mod" value="TuGG">W Grill Guard
+  <input type="checkbox" name="mod" value="TuFW">W Forged Wheels
+  <input type="checkbox" name="mod" value="TuQS">W Quick Shift
+  <input type="checkbox" name="mod" value="TuBC">W Brake Coolers<br>
+</p>
+<p class="red">
+<input type="checkbox" name="mod" value="TiGR">Ti Gun Rack
+<input type="checkbox" name="mod" value="TiAR">Ti Ammo Rack
+<input type="checkbox" name="mod" value="TiRF">Ti Range Finder
+<input type="checkbox" name="mod" value="TiWG">Ti Window Guards
+<input type="checkbox" name="mod" value="TiReP">Ti Rear Plates
+<input type="checkbox" name="mod" value="TiRoP">Ti Roof Plate<br>
+<input type="checkbox" name="mod" value="TiPI">Ti Power Inverter
+<input type="checkbox" name="mod" value="TiDS">Ti Drive Shaft
+<input type="checkbox" name="mod" value="TiCL">Ti Coil Lift
+<input type="checkbox" name="mod" value="TiHD">Ti HUD
+<input type="checkbox" name="mod" value="TiTD">Ti Tactical Display
+<input type="checkbox" name="mod" value="TiSP">Ti Skid Plate<br>
+</p>
+<p class="blue">
+<input type="checkbox" name="mod" value="IGT">Iron Gun Turret
+<input type="checkbox" name="mod" value="IMT">Iron Missile Turret
+<input type="checkbox" name="mod" value="I90">Iron 90mm Gun
+<input type="checkbox" name="mod" value="ICG">Iron Chain Gun
+<input type="checkbox" name="mod" value="IDP">Iron Door Panels
+<input type="checkbox" name="mod" value="IRB">Iron Roll Bar<br>
+<input type="checkbox" name="mod" value="IGG">Iron Grill Guard
+<input type="checkbox" name="mod" value="IFW">Iron Forged Wheels
+<input type="checkbox" name="mod" value="IQS">Iron Quick Shift
+<input type="checkbox" name="mod" value="IBC">Iron Brake Coolers
+<input type="checkbox" name="mod" value="IFE">Iron Flame Exhaust
+<input type="checkbox" name="mod" value="IB">Iron Bushings<br>
+</p>
+<p class="green">
+<input type="checkbox" name="mod" value="AGR">Al Gun Rack
+<input type="checkbox" name="mod" value="AAR">Al Ammo Rack
+<input type="checkbox" name="mod" value="ARF">Al Range Finder
+<input type="checkbox" name="mod" value="AWG">Al Window Guards
+<input type="checkbox" name="mod" value="AReP">Al Rear Plates
+<input type="checkbox" name="mod" value="ARoP">Al Roof Plate<br>
+<input type="checkbox" name="mod" value="API">Al Power Inverter
+<input type="checkbox" name="mod" value="ADS">Al Drive Shaft
+<input type="checkbox" name="mod" value="ACL">Al Coil Lift
+<input type="checkbox" name="mod" value="AGT">Al Gun Turret
+<input type="checkbox" name="mod" value="ASM">Al Sensor Module
+<input type="checkbox" name="mod" value="AS">Al Spoiler<br>
+</p>
+<p class="yellow">
+<input type="checkbox" name="mod" value="TGT">Tin Gun Turret
+<input type="checkbox" name="mod" value="TMT">Tin Missile Turret
+<input type="checkbox" name="mod" value="T90">Tin 90mm Gun
+<input type="checkbox" name="mod" value="TCG">Tin Chain Gun
+<input type="checkbox" name="mod" value="TDP">Tin Door Panels
+<input type="checkbox" name="mod" value="TRB">Tin Roll Bar<br>
+<input type="checkbox" name="mod" value="TGG">Tin Grill Guard
+<input type="checkbox" name="mod" value="TFW">Tin Forged Wheels
+<input type="checkbox" name="mod" value="TQS">Tin Quick Shift
+<input type="checkbox" name="mod" value="TBC">Tin Brake Coolers
+<input type="checkbox" name="mod" value="TFE">Tin Flame Exhaust
+<input type="checkbox" name="mod" value="TB">Tin Bushings
+</p>
+</form>
+</div>
+
+<div style="width: 850px; border: 1px solid; margin-botton:0.5em;">
+<form name="weaponSelection" action="">
+<b>Weapons<br></b>
+<p class="orange">
+  <input style="width: 40px;" type="number" name="weapon" value="0" min="0" max="20" class="OFT">Flame Thrower
+  <input style="width: 40px;" type="number" name="weapon" value="0" min="0" max="20" class="OSeG">Sentry Gun
+  <input style="width: 40px;" type="number" name="weapon" value="0" min="0" max="20" class="OSyG">Syringe Gun
+  <input style="width: 40px;" type="number" name="weapon" value="0" min="0" max="20" class="OL">Laser<br>
+</p>
+<p class="purple">
+  <input style="width: 40px;" type="number" name="weapon" value="0" min="0" max="20" class="PPM">Proximity Mine
+  <input style="width: 40px;" type="number" name="weapon" value="0" min="0" max="20" class="PRL">Rocket Launcher
+  <input style="width: 40px;" type="number" name="weapon" value="0" min="0" max="20" class="PSR">Sniper Rifle
+  <input style="width: 40px;" type="number" name="weapon" value="0" min="0" max="20" class="PMaG">Machine Gun
+  <input style="width: 40px;" type="number" name="weapon" value="0" min="0" max="20" class="PMoG">Mounted Gun<br>
+</p>
+<p class="red">
+  <input style="width: 40px;" type="number" name="weapon" value="0" min="0" max="20" class="RPB">Pipe Bomb
+  <input style="width: 40px;" type="number" name="weapon" value="0" min="0" max="20" class="RS">Shotgun
+  <input style="width: 40px;" type="number" name="weapon" value="0" min="0" max="20" class="RGL">Grenade Launcher
+  <input style="width: 40px;" type="number" name="weapon" value="0" min="0" max="20" class="RRe">Revolver
+  <input style="width: 40px;" type="number" name="weapon" value="0" min="0" max="20" class="RRi">Rifle<br>
+</p>
+<p class="blue">
+<input style="width: 40px;" type="number" name="weapon" value="0" min="0" max="20" class="BMC">Molotov Cocktail
+<input style="width: 40px;" type="number" name="weapon" value="0" min="0" max="20" class="BRT">Road Tacks
+<input style="width: 40px;" type="number" name="weapon" value="0" min="0" max="20" class="BC">Cutlass
+<input style="width: 40px;" type="number" name="weapon" value="0" min="0" max="20" class="BK">Katana
+<input style="width: 40px;" type="number" name="weapon" value="0" min="0" max="20" class="BLP">Lead Pipe<br>
+</p>
+<p class="green">
+<input style="width: 40px;" type="number" name="weapon" value="0" min="0" max="20" class="GSS">Smoke Screen
+<input style="width: 40px;" type="number" name="weapon" value="0" min="0" max="20" class="GTC">Two-handed Claymore
+<input style="width: 40px;" type="number" name="weapon" value="0" min="0" max="20" class="GC">Crowbar
+<input style="width: 40px;" type="number" name="weapon" value="0" min="0" max="20" class="GBA">Bow and Arrows
+<input style="width: 40px;" type="number" name="weapon" value="0" min="0" max="20" class="GB">Blunderbuss<br>
+</p>
+<p class="yellow">
+<input style="width: 40px;" type="number" name="weapon" value="0" min="0" max="20" class="YFA">Fire Axe
+<input style="width: 40px;" type="number" name="weapon" value="0" min="0" max="20" class="YW">Wrench
+<input style="width: 40px;" type="number" name="weapon" value="0" min="0" max="20" class="YBK">Butcher Knife
+<input style="width: 40px;" type="number" name="weapon" value="0" min="0" max="20" class="YPC">Pool Cue
+<input style="width: 40px;" type="number" name="weapon" value="0" min="0" max="20" class="YB">Bat
+</p>
+</form>
+</div>
+
+<table>
+  <tr>
+    <th>Stat name</th><th>Base</th><th>Mods</th><th>Wpns</th><th>Total</th>
+  </tr>
+  <tr>
+    <td>Speed</td>
+    <td id="base_speed"></td>
+    <td id="mod_speed"></td>
+    <td></td>
+    <td id="total_speed"></td>
+  </tr>
+  <tr>
+    <td>Capacity</td>
+    <td id="base_capacity"></td>
+    <td id="mod_capacity"></td>
+    <td id="wpn_capacity"></td>
+    <td id="total_capacity"></td>
+  </tr>
+  <tr>
+    <td>Attack</td>
+    <td id="base_attack"></td>
+    <td id="mod_attack"></td>
+    <td></td>
+    <td id="total_attack"></td>
+  </tr>
+  <tr>
+    <td>Armor</td>
+    <td id="base_armor"></td>
+    <td id="mod_armor"></td>
+    <td></td>
+    <td id="total_armor"></td>
+  </tr>
+  <tr>
+    <td>Offense</td>
+    <td></td>
+    <td id="mod_offense"></td>
+    <td id="wpn_offense"></td>
+    <td id="total_offense"></td>
+  </tr>
+  <tr>
+    <td>Defense</td>
+    <td></td>
+    <td id="mod_defense"></td>
+    <td id="wpn_defense"></td>
+    <td id="total_defense"></td>
+  </tr>
+  <tr>
+    <td>Dodge</td>
+    <td></td>
+    <td id="mod_dodge"></td>
+    <td></td>
+    <td id="total_dodge"></td>
+  </tr>
+</table>
+<p style="margin-top: 0.5em;">
+  Total bolts required: <span id="bolts_needed">0</span>
+</p>
+</div>
+</body>
+</html>
